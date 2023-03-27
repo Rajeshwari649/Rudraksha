@@ -1,16 +1,33 @@
-
+<?php
+session_start();
+if(isset($POST['Logout'])){
+    session_destroy();
+    header("location: crm.php");
+}
+?>
 
 
 <?php  
-        session_start();
 
-        /*$fErr =$lErr=$frErr=$mrErr=$bgErr= $emailErr = $passErr = $phoneErr=$pphoneErr =$ageErr=$pphotoErr=$resumeErr="";
-        $fname=$mname = $lname=$frname= $mrname=$bname= $email = $dob = $gender = $pass = $phone =$pphone=$age= $resume=$pphoto="";*/
+        $fErr =$lErr=$frErr=$mrErr=$bgErr= $emailErr = $passErr = $phoneErr= "";
+        $fname = $lname=$frname= $mrname=$bname= $email = $dob = $gender = $pass = $phone = "";
 
-        if( isset($_POST['submit']) ){
+        if( $_SERVER["REQUEST_METHOD"] == "POST" ){
+
+            if( empty($_REQUEST["gender"]) ){
+                $gender ="";
+            }else {
+                $gender = $_REQUEST["gender"];
+            }
 
 
-           /* if( empty($_REQUEST["fname"]) ){
+            if( empty($_REQUEST["dob"]) ){
+                $dob = "";
+            }else {
+                $dob = $_REQUEST["dob"];
+            }
+
+            if( empty($_REQUEST["fname"]) ){
                 $fErr = "<p style='color:red'> * First  Name is required</p>";
             }else {
                 $fname = $_REQUEST["fname"];
@@ -25,97 +42,74 @@
             }else {
                 $lname = $_REQUEST["lname"];
             }
-            if( empty($_REQUEST["dob"]) ){
-                $dob = "";
-            }else {
-                $dob = $_REQUEST["dob"];
-            }
-            if( empty($_REQUEST["email"]) ){
-                $emailErr = "<p style='color:red'> * Email is required</p> ";
-            }else{
-                $email = $_REQUEST["email"];
-            }
-            if( empty($_REQUEST["phone"]) ){
-                $phoneErr = "<p style='color:red'> * phone  number is required</p>";
-                $phone = "";
-            }else {
-                $phone = $_REQUEST["phone"];
-            }
-            if( empty($_REQUEST["pphone"]) ){
-                $pphone = "";
-            }else {
-                $pphone = $_REQUEST["pphone"];
-            }
             if( empty($_REQUEST["frname"]) ){
                 $frErr = "<p style='color:red'> * Father's  Name is required</p>";
             }else {
                 $frname = $_REQUEST["frname"];
             }
             if( empty($_REQUEST["mrname"]) ){
-                $mrErr = "<p style='color:red'> * Mother's  Name is required</p>";
+                $nameErr = "<p style='color:red'> * Mother's  Name is required</p>";
             }else {
-                $mrname = $_REQUEST["mrname"];
+                $mrname = $_REQUEST["bname"];
+            }
+            if( empty($_REQUEST["frname"]) ){
+                $bgrr = "<p style='color:red'> * Blood group is required</p>";
+            }else {
+                $frname = $_REQUEST["bname"];
             }
 
-            if( empty($_REQUEST["bname"]) ){
-                $bgErr = "<p style='color:red'> * Blood Group is required</p>";
+            if( empty($_REQUEST["phone"]) ){
+                $phoneErr = "<p style='color:red'> * phone  number is required</p>";
+                $phone = "";
             }else {
-                $bname = $_REQUEST["bname"];
+                $phone = $_REQUEST["phone"];
             }
-            if( empty($_REQUEST["age"]) ){
-                $ageErr = "<p style='color:red'> * Age is required</p>";
-            }else {
-                $age = $_REQUEST["age"];
-            }
-            
 
-            if( empty($_REQUEST["gender"]) ){
-                $gender ="";
-            }else {
-                $gender = $_REQUEST["gender"];
+            if( empty($_REQUEST["email"]) ){
+                $emailErr = "<p style='color:red'> * Email is required</p> ";
+            }else{
+                $email = $_REQUEST["email"];
             }
-            if( empty($_REQUEST["resume"]) ){
-                $resumeErr = "<p style='color:red'> * Resume is required</p>";
-            }else {
-                $resume = $_REQUEST["resume"];
-            }
-            if( empty($_REQUEST["pphoto"]) ){
-                $pphotoErr = "<p style='color:red'> * photo is required</p>";
-            }else {
-                $pphoto = $_REQUEST["pphoto"];
-            }
-            $_SESSION['fname']=$fname;
-            $_SESSION['mname']=$mname;
-            $_SESSION['lname']=$lname;
-            $_SESSION['dob']=$dob;
-            $_SESSION['email']=$email;
-            $_SESSION['phone']=$phone;
-            $_SESSION['pphone']=$pphone;
-            $_SESSION['frname']=$frname;
-            $_SESSION['mrname']=$mrname;
-            $_SESSION['bname']=$bname;
-            $_SESSION['age']=$age;
-            $_SESSION['gender']=$gender;
-            $_SESSION['resume']=$resume;
-            $_SESSION['pphoto']=$pphoto;
-            */
 
-            $_SESSION['fname'] = $_POST['fname'];
-            $_SESSION['mname'] = $_POST['mname'];
-            $_SESSION['lname'] = $_POST['lname'];
-            $_SESSION['dob'] = $_POST['dob'];
-            $_SESSION['email'] = $_POST['email'];
-            $_SESSION['phone'] = $_POST['phone'];
-            $_SESSION['pphone'] = $_POST['pphone'];
-            $_SESSION['frname'] = $_POST['frname'];
-            $_SESSION['mrname'] = $_POST['mrname'];
-            $_SESSION['bname'] = $_POST['bname'];
-            $_SESSION['age'] = $_POST['age'];
-            $_SESSION['gender'] = $_POST['gender'];
-            $_SESSION['resume'] = $_POST['resume'];
-            $_SESSION['pphoto'] = $_POST['pphoto'];
+            if( empty($_REQUEST["pass"]) ){
+                $passErr = "<p style='color:red'> * Password is required</p> ";
+            }else{
+                $pass = $_REQUEST["pass"];
+            }
 
-            
+
+            if( !empty($name) && !empty($email) && !empty($pass) && !empty($phone) ){
+
+                // database connection
+                require_once "../connection.php";
+
+                $sql_select_query = "SELECT email FROM employee WHERE email = '$email' ";
+                $r = mysqli_query($conn , $sql_select_query);
+
+                if( mysqli_num_rows($r) > 0 ){
+                    $emailErr = "<p style='color:red'> * Email Already Register</p>";
+                } else{
+
+                    $sql = "INSERT INTO employee( name , email , password , dob, gender , phone ) VALUES( '$name' , '$email' , '$pass' , '$dob' , '$gender', '$phone' )  ";
+                    $result = mysqli_query($conn , $sql);
+                    if($result){
+                     $fame =$lname=$frname=$mrname=$bname= $email = $dob = $gender = $pass = $phone = "";
+                        echo "<script>
+                        $(document).ready( function(){
+                            $('#showModal').modal('show');
+                            $('#modalHead').hide();
+                            $('#linkBtn').attr('href', 'manage-employee.php');
+                            $('#linkBtn').text('View Employees');
+                            $('#addMsg').text('Employee Added Successfully!');
+                            $('#closeBtn').text('Add More?');
+                        })
+                     </script>
+                     ";
+                    }
+                    
+                }
+
+            }
         }
 
 ?>
@@ -224,12 +218,12 @@
                         
                         <li class="has-sub">
                             <a class="js-arrow " href="#">
-                                <i class="fa fa-address-card-o menu-icon"></i>Employee Master</a>
+                                <i class="fa fa-address-card-o menu-icon"></i>Intern Master</a>
                                     <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                                         <li>
-                                            <a href="./cvms/addemployee.php"><i class="fa-solid fa-plus"></i>Add Employee</a>
+                                            <a href="./cvms/intern.php"><i class="fa-solid fa-plus"></i>Add Intern</a>
                                         </li>  
-                                        <li><a href="./manageemployee.php"><i class="fa fa-tasks menu-icon"></i>Manage Employee</a>
+                                        <li><a href="./manageintern.php"><i class="fa fa-tasks menu-icon"></i>Manage Intern</a>
                                     </li>   
                                     </ul>
                         </li>
@@ -316,21 +310,21 @@
                                 <div class="form-row ">
                                     <div class="form-group col-md-3 ">
                                         <label for="fname">First Name:</label>
-                                        <input type="text" class="form-control "  name="fname" >
-                                        
+                                        <input type="text" class="form-control " value="<?php echo $fname; ?>" name="fname" >
+                                        <?php echo $fErr; ?>
                                     </div>
                                     <div class="form-group col-md-3 ">
                                         <label for="mname">Middle Name:</label>
-                                        <input type="text" class="form-control "  name="mname" >
+                                        <input type="text" class="form-control " value="<?php echo $fname; ?>" name="mname" >
                                     </div>
                                     <div class="form-group col-md-3 ">
                                         <label for="lname">Last Name:</label>
-                                        <input type="text" class="form-control "  name="lname" >
-                                        
+                                        <input type="text" class="form-control " value="<?php echo $lname; ?>" name="lname" >
+                                        <?php echo $lErr; ?>
                                     </div>
                                     <div class="form-group col-md-3">
                                             <label for="dob">Date-of-Birth:</label>
-                                            <input type="date" class="form-control "  name="dob" id="dob" >  
+                                            <input type="date" class="form-control " value="<?php echo $dob; ?>" name="dob" id="dob" >  
                                     </div>
                                     
                                     </div>
@@ -339,17 +333,18 @@
 
                                     <div class="form-group col-md-4">
                                         <label for="email">Email:</label>
-                                        <input type="email" class="form-control "  name="email" >     
-                                        
+                                        <input type="email" class="form-control " value="<?php echo $email; ?>" name="email" >     
+                                        <?php echo $emailErr; ?>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="phone">Phone Number:</label>
-                                        <input class="form-control "  name="phone" >  
-                                               
+                                        <input class="form-control " value="<?php echo $phone; ?>" name="phone" >  
+                                        <?php echo $phoneErr; ?>            
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="parent_phone">Parent's Phone Number:</label>
-                                        <input class="form-control "  name="pphone" >            
+                                        <input class="form-control " value="<?php echo $phone; ?>" name="parent_phone" >  
+                                        <?php echo $phoneErr; ?>            
                                     </div>
                                     </div>
 
@@ -357,17 +352,17 @@
                                     <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label for="frname">Father's Name:</label>
-                                        <input type="text" class="form-control "  name="frname" >
-                                        
+                                        <input type="text" class="form-control " value="<?php echo $frname; ?>" name="frname" >
+                                        <?php echo $frErr; ?>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="mrname">Mother's Name:</label>
-                                        <input type="text" class="form-control "  name="mrname" >
-                                        
+                                        <input type="text" class="form-control " value="<?php echo $mrname; ?>" name="mrname" >
+                                        <?php echo $mrErr; ?>
                                     </div>
                                     <div class="form-group col-md-2 ">
                                         <label for="bname">Blood Group:</label>
-                                        <select class="form-control" name="bname">
+                                        <select class="form-control"value="<?php echo $bname; ?>" name="bname">
                                             <option>Select</option>
                                             <option>NA</option>
                                             <option>A+</option>
@@ -379,12 +374,11 @@
                                             <option>AB+</option>
                                             <option>AB-</option>
                                         </select>
-                                        
+                                        <?php echo $bgErr; ?>
                                     </div>
                                     <div class="form-group col-md-2">
                                             <label for="age">Age:</label>
                                             <input type="text" class="form-control " readonly id="age" onmousemove="FindAge()" name="age" placeholder="Your Age" value>
-                                            
                                         </div>
                                     </div>
 
@@ -398,34 +392,32 @@
                                             <label class="mr-3">Gender:</label>
                                             <div class="form-inline">
                                                 <div class="form-check mr-3">
-                                                    <input class="form-check-input" type="radio" name="gender"   value="Male"  selected>
+                                                    <input class="form-check-input" type="radio" name="gender" <?php if($gender == "Male" ){ echo "checked"; } ?>  value="Male"  selected>
                                                     <label class="form-check-label">Male</label>
                                                 </div>
                                                 <div class="form-check mr-3">
-                                                    <input class="form-check-input" type="radio" name="gender"   value="Female">
+                                                    <input class="form-check-input" type="radio" name="gender" <?php if($gender == "Female" ){ echo "checked"; } ?>  value="Female">
                                                     <label class="form-check-label">Female</label>
                                                 </div>
                                                 <div class="form-check mr-3">
-                                                    <input class="form-check-input" type="radio" name="gender"  value="Other">
+                                                    <input class="form-check-input" type="radio" name="gender" <?php if($gender == "Other" ){ echo "checked"; } ?>  value="Other">
                                                     <label class="form-check-label">TG</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="resume">Resume:</label>
-                                            <input type="file" class="form-control-file" id="resume" name="resume" required>
-                                            
+                                            <input type="file" class="form-control-file" id="resume" required>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="profile-photo">Profile Photo:</label>
-                                            <input type="file" class="form-control-file" id="profile-photo" name="pphoto" required>
-                                            
+                                            <input type="file" class="form-control-file" id="profile-photo" required>
                                         </div>
                                     </div>
 
                                     
                                 <br>
-                                <button type="submit" name="submit" class="btn btn-outline-primary float-right"><a href="./addemp1.php">Next</a></button>
+                                <button class="btn btn-outline-primary float-right"><a href="./addintern1.php">Next</a></button>
                                 </form>
           
                             
@@ -481,22 +473,6 @@
             $(this).find('a').css('color', '');
         });
     </script>
-    <script>
-        function FindAge() {
-            var dob = document.getElementById("dob").value;
-            if (dob != '') {
-                var today = new Date();
-                var birthDate = new Date(dob);
-                var age = today.getFullYear() - birthDate.getFullYear();
-                var m = today.getMonth() - birthDate.getMonth();
-                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                    age--;
-                }
-                document.getElementById("age").value = age;
-            }
-        }
-    </script>
-
 
 </body>
 

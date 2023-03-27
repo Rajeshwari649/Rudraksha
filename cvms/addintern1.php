@@ -1,100 +1,110 @@
+<?php
+session_start();
+if(isset($POST['Logout'])){
+    session_destroy();
+    header("location: crm.php");
+}
+?>
 
 
 <?php  
-        session_start();
-        /*$eduErr =$slErr ="";
-        $educationLevel=$degree = $sname= $sbname = $uname=$mode=$stream=$state=$sdate=$edate=$marks="";*/
 
-        if( isset($_POST['submit']) ){
+        $nameErr = $emailErr = $passErr = $phoneErr= "";
+        $fname = $lname=$frname= $mrname=$bname= $email = $dob = $gender = $pass = $phone = "";
 
-            /*
+        if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 
-
-            if( empty($_REQUEST["educationLevel"]) ){
-                $eduErr = "<p style='color:red'> * Education is required</p>";
+            if( empty($_REQUEST["gender"]) ){
+                $gender ="";
             }else {
-                $educationLevel = $_REQUEST["educationLevel"];
+                $gender = $_REQUEST["gender"];
             }
-            if( empty($_REQUEST["degree"]) ){
-                $degree="";
-            }else {
-                $degree = $_REQUEST["degree"];
-            }
-            if( empty($_REQUEST["sname"]) ){
-                $slErr = "<p style='color:red'> * school  Name is required</p>";
-            }else {
-                $sname = $_REQUEST["sname"];
-            }
-            if( empty($_REQUEST["sbname"]) ){
-                $sbname = "";
-            }else {
-                $sbname = $_REQUEST["sbname"];
-            }
-            if( empty($_REQUEST["uname"]) ){
-                $uname = "";
-            }else {
-                $uname = $_REQUEST["uname"];
-            }
-            if( empty($_REQUEST["mode"]) ){
-                $mode = "";
-            }else {
-                $mode = $_REQUEST["mode"];
-            }
-            if( empty($_REQUEST["stream"]) ){
-                $stream = "";
-            }else {
-                $stream = $_REQUEST["stream"];
-            }
-            if( empty($_REQUEST["state"]) ){
-                $state = "";
-            }else {
-                $state = $_REQUEST["state"];
-            }
-            if( empty($_REQUEST["sdate"]) ){
-                $sdate = "";
-            }else {
-                $sdate = $_REQUEST["sdate"];
-            }
-            if( empty($_REQUEST["edate"]) ){
-                $edate = "";
-            }else {
-                $edate = $_REQUEST["edate"];
-            }
-            if( empty($_REQUEST["marks"]) ){
-                $marks = "";
-            }else {
-                $marks = $_REQUEST["marks"];
-            } 
-            
-
-            $_SESSION['educationLevel']=$educationLevel;
-            $_SESSION['degree']=$degree;
-            $_SESSION['sname']=$sname;
-            $_SESSION['sbname']=$sbname;
-            $_SESSION['uname']=$uname;
-            $_SESSION['mode']=$mode;
-            $_SESSION['stream']=$stream;
-            $_SESSION['state']=$state;
-            $_SESSION['sdate']=$sdate;
-            $_SESSION['edate']=$edate;
-            $_SESSION['marks']=$marks;
-
-            */
-
-            $_SESSION['educationLevel'] = $_POST['educationLevel'];
-            $_SESSION['degree'] = $_POST['degree'];
-            $_SESSION['sname'] = $_POST['sname'];
-            $_SESSION['sbname'] = $_POST['sbname'];
-            $_SESSION['uname'] = $_POST['uname'];
-            $_SESSION['mode'] = $_POST['mode'];
-            $_SESSION['stream'] = $_POST['stream'];
-            $_SESSION['state'] = $_POST['state'];
-            $_SESSION['sdate'] = $_POST['sdate'];
-            $_SESSION['edate'] = $_POST['edate'];
-            $_SESSION['marks'] = $_POST['marks'];
 
 
-            
+            if( empty($_REQUEST["dob"]) ){
+                $dob = "";
+            }else {
+                $dob = $_REQUEST["dob"];
+            }
+
+            if( empty($_REQUEST["fname"]) ){
+                $nameErr = "<p style='color:red'> * First  Name is required</p>";
+            }else {
+                $fname = $_REQUEST["fname"];
+            }
+            if( empty($_REQUEST["lname"]) ){
+                $nameErr = "<p style='color:red'> * Last  Name is required</p>";
+            }else {
+                $fname = $_REQUEST["lname"];
+            }
+            if( empty($_REQUEST["frname"]) ){
+                $nameErr = "<p style='color:red'> * Father's  Name is required</p>";
+            }else {
+                $frname = $_REQUEST["frname"];
+            }
+            if( empty($_REQUEST["mrname"]) ){
+                $nameErr = "<p style='color:red'> * Mother's  Name is required</p>";
+            }else {
+                $mrname = $_REQUEST["bname"];
+            }
+            if( empty($_REQUEST["frname"]) ){
+                $nameErr = "<p style='color:red'> * Blood group is required</p>";
+            }else {
+                $frname = $_REQUEST["bname"];
+            }
+
+            if( empty($_REQUEST["phone"]) ){
+                $phoneErr = "<p style='color:red'> * phone is required</p>";
+                $phone = "";
+            }else {
+                $phone = $_REQUEST["phone"];
+            }
+
+            if( empty($_REQUEST["email"]) ){
+                $emailErr = "<p style='color:red'> * Email is required</p> ";
+            }else{
+                $email = $_REQUEST["email"];
+            }
+
+            if( empty($_REQUEST["pass"]) ){
+                $passErr = "<p style='color:red'> * Password is required</p> ";
+            }else{
+                $pass = $_REQUEST["pass"];
+            }
+
+
+            if( !empty($name) && !empty($email) && !empty($pass) && !empty($phone) ){
+
+                // database connection
+                require_once "../connection.php";
+
+                $sql_select_query = "SELECT email FROM employee WHERE email = '$email' ";
+                $r = mysqli_query($conn , $sql_select_query);
+
+                if( mysqli_num_rows($r) > 0 ){
+                    $emailErr = "<p style='color:red'> * Email Already Register</p>";
+                } else{
+
+                    $sql = "INSERT INTO employee( name , email , password , dob, gender , phone ) VALUES( '$name' , '$email' , '$pass' , '$dob' , '$gender', '$phone' )  ";
+                    $result = mysqli_query($conn , $sql);
+                    if($result){
+                     $fame =$lname=$frname=$mrname=$bname= $email = $dob = $gender = $pass = $phone = "";
+                        echo "<script>
+                        $(document).ready( function(){
+                            $('#showModal').modal('show');
+                            $('#modalHead').hide();
+                            $('#linkBtn').attr('href', 'manage-employee.php');
+                            $('#linkBtn').text('View Employees');
+                            $('#addMsg').text('Employee Added Successfully!');
+                            $('#closeBtn').text('Add More?');
+                        })
+                     </script>
+                     ";
+                    }
+                    
+                }
+
+            }
         }
 
 ?>
@@ -192,10 +202,10 @@
                                 <i class="fas fa-chart-bar"></i>Charts</a>
                         </li>
                         <li>
-                            <a href="./addemployee.php">
-                            <i class="fa-solid fa-user"></i>Employee Master</a>
+                            <a href="./addintern.php">
+                            <i class="fa-solid fa-user"></i>Intern Master</a>
                             <ul aria-expanded="false">
-                            <li><a href="./addemployee.php"> <i class="icon-plus menu-icon"></i><span class="nav-text">Add Employee</span></a></li>
+                            <li><a href="./addintern.php"> <i class="icon-plus menu-icon"></i><span class="nav-text">Add Intern</span></a></li>
                             <!--<li><a href="./manageemployee.php"> <i class="fa fa-tasks menu-icon"></i><span class="nav-text">Manage Employee</span></a></li>-->
                             <!-- <li><a href="./"> <i class="fa fa-bar-chart menu-icon"></i><span class="nav-text">Salary Table</span></a></li> -->
 
@@ -295,23 +305,23 @@
                                     
                                     <div class="col-md-3 ">
                                         <div class="form-group">
-                                            <label for="educationLevel">Education :</label>
-                                                <select name="educationLevel" class="form-control">
+                                            <label for="education">Education :</label>
+                                                <select class="form-control">
                                                     <option>Select</option>
                                                     <option>Post-Graduate</option>
                                                     <option>Graduate</option>
                                                     <option>Higher Secondary (10+2)</option>
                                                     <option>Secondary Education (10)</option>
                                                     
+                                                    
                                                 </select>
-                                                
                                             </div> 
                                     </div>
 
                                     <div class="col-md-3">
                                         <div class="form-group ">
                                             <label for="degree">Degree:</label>
-                                                <select id="degree" name="degree" class="form-control">
+                                                <select id="degree" class="form-control">
                                                     <option>Select</option>
                                                     <option>NA</option>
                                                     <option>BE/BTech</option>
@@ -327,9 +337,8 @@
 
                                     <div class="col-md-4 ">
                                         <div class="form-group">
-                                                <label for="sname">School/College Name:</label>
-                                                <input type="text" class="form-control" id="sname" name="sname" placeholder="Enter your College Name">
-                                                
+                                                <label for="collegename">School/College Name:</label>
+                                                <input type="text" class="form-control" id="collegename" placeholder="Enter your College Name">
                                         </div>
                                     </div>
                                     
@@ -339,8 +348,8 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="sbname">School Board:</label>
-                                        <select name="sbname" class="form-control">
+                                        <label>School Board:</label>
+                                        <select class="form-control">
                                         <option>Select</option>
                                         <option>State Boards</option>
                                         <option>Central Board of Secondary Education (CBSE)</option>
@@ -426,15 +435,15 @@
 
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                                <label for="uname">University Name:</label>
-                                                <input type="text" class="form-control" id="uname" name="uname" placeholder="Enter your University Name">
+                                                <label for="uniname">University Name:</label>
+                                                <input type="text" class="form-control" id="uniname" placeholder="Enter your University Name">
                                         </div>
                                     </div>
 
                                     <div class="col-md-2 ">
                                         <div class="form-group">
-                                            <label for="mode">Mode:</label>
-                                                <select name="mode" class="form-control">
+                                            <label for="education">Mode:</label>
+                                                <select class="form-control">
                                                     <option>Select</option>
                                                     <option>English</option>
                                                     <option>Hindi</option>
@@ -445,8 +454,8 @@
 
                                     <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="stream">Stream:</label>
-                                        <input type="text" name="stream" class="form-control">
+                                        <label>Stream:</label>
+                                        <input type="text" class="form-control">
                                     </div>
                                     </div>
                                 </div>
@@ -454,8 +463,8 @@
 
                                 <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="state">State:</label>
-                                            <select name="state" class="form-control">
+                                            <label>State:</label>
+                                            <select class="form-control">
                                                 <option value="">Select State</option>
                                                 <option value="Andhra Pradesh">Andhra Pradesh</option>
                                                 <option value="Arunachal Pradesh">Arunachal Pradesh</option>
@@ -493,7 +502,7 @@
                                         <div class="form-group">
                                         <label>Start Date:</label>
                                         <div class="input-group date" id="start-time-picker" data-target-input="nearest">
-                                            <input type="date" name="sdate" class="form-control datetimepicker-input" data-target="#start-time-picker"/>
+                                            <input type="date" class="form-control datetimepicker-input" data-target="#start-time-picker"/>
                                             <div class="input-group-append" data-target="#start-time-picker" data-toggle="datetimepicker">
                                             
                                             </div>
@@ -504,7 +513,7 @@
                                         <div class="form-group">
                                         <label>End date:</label>
                                         <div class="input-group date" id="end-time-picker" data-target-input="nearest">
-                                            <input type="date" name="edate" class="form-control datetimepicker-input" data-target="#end-time-picker"/>
+                                            <input type="date" class="form-control datetimepicker-input" data-target="#end-time-picker"/>
                                             <div class="input-group-append" data-target="#end-time-picker" data-toggle="datetimepicker">
                                             
                                             </div>
@@ -515,7 +524,7 @@
                                 <div class="col-md-1">
                                     <div class="form-group">
                                         <label>Marks:</label>
-                                        <input type="text" name="marks" class="form-control " placeholder="%">
+                                        <input type="text" class="form-control " placeholder="%">
                                     </div>
                                 </div>
 
@@ -546,11 +555,11 @@
                                 <div class="form-row justify-content-center">
                                 
                                 <div class="form-group col-md-5">
-                                    <button  class="btn btn-outline-primary float-left"><a href="./addemployee.php">Previous</a></button>
+                                    <button  class="btn btn-outline-primary float-left"><a href="./addintern.php">Previous</a></button>
                                 </div>
 
                                 <div class="form-group col-md-5">
-                                    <button type="submit" name="submit"  class="btn btn-outline-primary float-right"><a href="./addemp2.php">Next</a></button> <br>
+                                    <button  class="btn btn-outline-primary float-right"><a href="./addintern2.php">Next</a></button> <br>
                                 </div>
 
                                 </div>
@@ -609,30 +618,31 @@
         $(document).ready(function() {
             // Add education details
             $(document).on("click", ".add-education", function() {
-                var html =  `<div id="education-details1">
-                                
+                var html =  ` <div id="education-details1">
+                              <h4 class="text-center pb-3 text-info border-bottom"></h4>
+                              <br>
 
                                 <div class="row justify-content-center" >
                                     
                                     <div class="col-md-3 ">
                                         <div class="form-group">
-                                            <label for="educationLevel">Education :</label>
-                                                <select name="educationLevel" class="form-control">
+                                            <label for="education">Education :</label>
+                                                <select class="form-control">
                                                     <option>Select</option>
                                                     <option>Post-Graduate</option>
                                                     <option>Graduate</option>
                                                     <option>Higher Secondary (10+2)</option>
                                                     <option>Secondary Education (10)</option>
                                                     
+                                                    
                                                 </select>
-                                                
                                             </div> 
                                     </div>
 
                                     <div class="col-md-3">
                                         <div class="form-group ">
                                             <label for="degree">Degree:</label>
-                                                <select id="degree" name="degree" class="form-control">
+                                                <select id="degree" class="form-control">
                                                     <option>Select</option>
                                                     <option>NA</option>
                                                     <option>BE/BTech</option>
@@ -648,9 +658,8 @@
 
                                     <div class="col-md-4 ">
                                         <div class="form-group">
-                                                <label for="sname">School/College Name:</label>
-                                                <input type="text" class="form-control" id="sname" name="sname" placeholder="Enter your College Name">
-                                                
+                                                <label for="collegename">School/College Name:</label>
+                                                <input type="text" class="form-control" id="collegename" placeholder="Enter your College Name">
                                         </div>
                                     </div>
                                     
@@ -660,8 +669,8 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="sbname">School Board:</label>
-                                        <select name="sbname" class="form-control">
+                                        <label>School Board:</label>
+                                        <select class="form-control">
                                         <option>Select</option>
                                         <option>State Boards</option>
                                         <option>Central Board of Secondary Education (CBSE)</option>
@@ -747,15 +756,15 @@
 
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                                <label for="uname">University Name:</label>
-                                                <input type="text" class="form-control" id="uname" name="uname" placeholder="Enter your University Name">
+                                                <label for="uniname">University Name:</label>
+                                                <input type="text" class="form-control" id="uniname" placeholder="Enter your University Name">
                                         </div>
                                     </div>
 
                                     <div class="col-md-2 ">
                                         <div class="form-group">
-                                            <label for="mode">Mode:</label>
-                                                <select name="mode" class="form-control">
+                                            <label for="education">Mode:</label>
+                                                <select class="form-control">
                                                     <option>Select</option>
                                                     <option>English</option>
                                                     <option>Hindi</option>
@@ -766,8 +775,8 @@
 
                                     <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="stream">Stream:</label>
-                                        <input type="text" name="stream" class="form-control">
+                                        <label>Stream:</label>
+                                        <input type="text" class="form-control">
                                     </div>
                                     </div>
                                 </div>
@@ -775,8 +784,8 @@
 
                                 <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="state">State:</label>
-                                            <select name="state" class="form-control">
+                                            <label>State:</label>
+                                            <select class="form-control">
                                                 <option value="">Select State</option>
                                                 <option value="Andhra Pradesh">Andhra Pradesh</option>
                                                 <option value="Arunachal Pradesh">Arunachal Pradesh</option>
@@ -814,7 +823,7 @@
                                         <div class="form-group">
                                         <label>Start Date:</label>
                                         <div class="input-group date" id="start-time-picker" data-target-input="nearest">
-                                            <input type="date" name="sdate" class="form-control datetimepicker-input" data-target="#start-time-picker"/>
+                                            <input type="date" class="form-control datetimepicker-input" data-target="#start-time-picker"/>
                                             <div class="input-group-append" data-target="#start-time-picker" data-toggle="datetimepicker">
                                             
                                             </div>
@@ -825,7 +834,7 @@
                                         <div class="form-group">
                                         <label>End date:</label>
                                         <div class="input-group date" id="end-time-picker" data-target-input="nearest">
-                                            <input type="date" name="edate" class="form-control datetimepicker-input" data-target="#end-time-picker"/>
+                                            <input type="date" class="form-control datetimepicker-input" data-target="#end-time-picker"/>
                                             <div class="input-group-append" data-target="#end-time-picker" data-toggle="datetimepicker">
                                             
                                             </div>
@@ -836,7 +845,7 @@
                                 <div class="col-md-1">
                                     <div class="form-group">
                                         <label>Marks:</label>
-                                        <input type="text" name="marks" class="form-control " placeholder="%">
+                                        <input type="text" class="form-control " placeholder="%">
                                     </div>
                                 </div>
 

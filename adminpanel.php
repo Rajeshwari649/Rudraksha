@@ -121,6 +121,20 @@ if(isset($POST['Logout'])){
                                     </li>  
                                     </ul>
                         </li>
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fa fa-address-card-o menu-icon"></i>Intern Master</a>
+                                    <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                        <li>
+                                            <a href="./cvms/addintern.php"><i class="fa-solid fa-plus"></i>Add Intern</a>
+                                        </li>  
+                                        <li><a href="./cvms/manageintern.php"><i class="fa fa-tasks menu-icon"></i>Manage Intern</a>
+                                       </li>  
+                                    </ul>
+                        </li>
+
+
+
                     </ul>    
                 </nav>
             </div>

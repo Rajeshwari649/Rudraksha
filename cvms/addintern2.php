@@ -1,259 +1,110 @@
-
+<?php
+session_start();
+if(isset($POST['Logout'])){
+    session_destroy();
+    header("location: crm.php");
+}
+?>
 
 
 <?php  
 
-        session_start();
-        print_r($_SESSION);
-        $fname = $_SESSION['fname'];
-        $mname = $_SESSION['mname'];
-        $lname = $_SESSION['lname'];
-        $dob = $_SESSION['dob'];
-        $email = $_SESSION['email'];
-        $phone = $_SESSION['phone'];
-        $pphone = $_SESSION['pphone'];
-        $frname = $_SESSION['frname'];
-        $mrname = $_SESSION['mrname'];
-        $bname = $_SESSION['bname'];
-        $age = $_SESSION['age'];
-        $gender = $_SESSION['gender'];
-        $resume = $_SESSION['resume'];
-        $pphoto = $_SESSION['pphoto'];
-        $educationLevel = $_SESSION['educationLevel'];
-        $degree = $_SESSION['degree'];
-        $sname = $_SESSION['sname'];
-        $sbname = $_SESSION['sbname'];
-        $uname = $_SESSION['uname'];
-        $mode = $_SESSION['mode'];
-        $stream = $_SESSION['stream'];
-        $state = $_SESSION['state'];
-        $sdate = $_SESSION['sdate'];
-        $edate = $_SESSION['edate'];
-        $marks = $_SESSION['marks'];
+        $nameErr = $emailErr = $passErr = $phoneErr= "";
+        $fname = $lname=$frname= $mrname=$bname= $email = $dob = $gender = $pass = $phone = "";
 
-            
+        if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 
-
-
-
-        /*$cname=$depart=$design=$exp=$pack=$hsal=$acctype=$ahname =$accnum =$bankname=$braname =$upinum =$ifsc =$design1=$depart1= $msal = $apack="";*/
-
-        if( isset($_POST['submit']) ){
-
-
-        
-            /*if( empty($_REQUEST["cname"]) ){
-                $cname="";
+            if( empty($_REQUEST["gender"]) ){
+                $gender ="";
             }else {
-                $cname = $_REQUEST["cname"];
-            }
-            if( empty($_REQUEST["depart"]) ){
-               $depart="";
-            }else {
-                $depart = $_REQUEST["depart"];
-            }
-            if( empty($_REQUEST["design"]) ){
-                $design = "";
-            }else {
-                $design = $_REQUEST["design"];
-            }
-            if( empty($_REQUEST["exp"]) ){
-                $exp = "";
-            }else {
-                $exp = $_REQUEST["exp"];
-            }
-            if( empty($_REQUEST["pack"]) ){
-                $pack = "";
-            }else {
-                $pack = $_REQUEST["pack"];
-            }
-            if( empty($_REQUEST["hsal"]) ){
-                $hsal = "";
-            }else {
-                $hsal = $_REQUEST["hsal"];
-            }
-            if( empty($_REQUEST["acctype"]) ){
-                $acctype = "";
-            }else {
-                $acctype = $_REQUEST["acctype"];
-            }
-            if( empty($_REQUEST["ahname"]) ){
-                $ahname = "";
-            }else {
-                $ahname = $_REQUEST["ahname"];
-            }
-            if( empty($_REQUEST["accnum"]) ){
-                $accnum = "";
-            }else {
-                $accnum = $_REQUEST["accnum"];
-            }
-            if( empty($_REQUEST["bankname"]) ){
-                $bankname = "";
-            }else {
-                $bankname = $_REQUEST["bankname"];
+                $gender = $_REQUEST["gender"];
             }
 
-            if( empty($_REQUEST["braname"]) ){
-                $braname = "";
+
+            if( empty($_REQUEST["dob"]) ){
+                $dob = "";
             }else {
-                $braname = $_REQUEST["braname"];
+                $dob = $_REQUEST["dob"];
             }
-            if( empty($_REQUEST["upinum"]) ){
-                $upinum = "";
+
+            if( empty($_REQUEST["fname"]) ){
+                $nameErr = "<p style='color:red'> * First  Name is required</p>";
             }else {
-                $upinum = $_REQUEST["upinum"];
+                $fname = $_REQUEST["fname"];
             }
-            if( empty($_REQUEST["ifsc"]) ){
-                $ifsc = "";
+            if( empty($_REQUEST["lname"]) ){
+                $nameErr = "<p style='color:red'> * Last  Name is required</p>";
             }else {
-                $ifsc = $_REQUEST["ifsc"];
+                $fname = $_REQUEST["lname"];
             }
-            if( empty($_REQUEST["design1"]) ){
-                $design1 = "";
+            if( empty($_REQUEST["frname"]) ){
+                $nameErr = "<p style='color:red'> * Father's  Name is required</p>";
             }else {
-                $design1 = $_REQUEST["design1"];
+                $frname = $_REQUEST["frname"];
             }
-            if( empty($_REQUEST["depart1"]) ){
-                $depart1="";
-             }else {
-                 $depart1 = $_REQUEST["depart1"];
-             }
-
-            if( empty($_REQUEST["msal"]) ){
-                $msal = "";
+            if( empty($_REQUEST["mrname"]) ){
+                $nameErr = "<p style='color:red'> * Mother's  Name is required</p>";
             }else {
-                $msal = $_REQUEST["msal"];
+                $mrname = $_REQUEST["bname"];
             }
-            if( empty($_REQUEST["apack"]) ){
-                $apack = "";
+            if( empty($_REQUEST["frname"]) ){
+                $nameErr = "<p style='color:red'> * Blood group is required</p>";
             }else {
-                $apack = $_REQUEST["apack"];
-            }*/
+                $frname = $_REQUEST["bname"];
+            }
+
+            if( empty($_REQUEST["phone"]) ){
+                $phoneErr = "<p style='color:red'> * phone is required</p>";
+                $phone = "";
+            }else {
+                $phone = $_REQUEST["phone"];
+            }
+
+            if( empty($_REQUEST["email"]) ){
+                $emailErr = "<p style='color:red'> * Email is required</p> ";
+            }else{
+                $email = $_REQUEST["email"];
+            }
+
+            if( empty($_REQUEST["pass"]) ){
+                $passErr = "<p style='color:red'> * Password is required</p> ";
+            }else{
+                $pass = $_REQUEST["pass"];
+            }
 
 
-
-            $_SESSION['cname'] = $_POST['cname'];
-            $_SESSION['depart'] = $_POST['depart'];
-            $_SESSION['design'] = $_POST['design'];
-            $_SESSION['exp'] = $_POST['exp'];
-            $_SESSION['pack'] = $_POST['pack'];
-            $_SESSION['hsal'] = $_POST['hsal'];
-            $_SESSION['acctype'] = $_POST['acctype'];
-            $_SESSION['ahname'] = $_POST['ahname'];
-            $_SESSION['accnum'] = $_POST['accnum'];
-            $_SESSION['bankname'] = $_POST['bankname'];
-            $_SESSION['braname'] = $_POST['braname'];
-            $_SESSION['upinum'] = $_POST['upinum'];
-            $_SESSION['ifsc'] = $_POST['ifsc'];
-            $_SESSION['design1'] = $_POST['design1'];
-            $_SESSION['depart1'] = $_POST['depart1'];
-            $_SESSION['msal'] = $_POST['msal'];
-            $_SESSION['apack'] = $_POST['apack'];
-
-
-
-    
-
-            $cname = $_SESSION['cname'];
-            $depart = $_SESSION['depart'];
-            $design = $_SESSION['design'];
-            $exp = $_SESSION['exp'];
-            $pack = $_SESSION['pack'];
-            $hsal = $_SESSION['hsal'];
-            $acctype = $_SESSION['acctype'];
-            $ahname = $_SESSION['ahname'];
-            $accnum = $_SESSION['accnum'];
-            $bankname = $_SESSION['bankname'];
-            $braname = $_SESSION['braname'];
-            $upinum = $_SESSION['upinum'];
-            $ifsc = $_SESSION['ifsc'];
-            $design1 = $_SESSION['design1'];
-            $depart1 = $_SESSION['depart1'];
-            $msal = $_SESSION['msal'];
-            $apack = $_SESSION['apack'];
-
-
-            echo $fname;
-            echo $sname;
-            
-
-
-
-
-
-            if( !empty($fname) && !empty($email)  && !empty($phone) ){
+            if( !empty($name) && !empty($email) && !empty($pass) && !empty($phone) ){
 
                 // database connection
-                require_once "../dbcon.php";
+                require_once "../connection.php";
 
-                
-
-                $sql_select_query = "SELECT Email FROM employeepersonaldetails WHERE Email = '$email' ";
-                $r = mysqli_query($con , $sql_select_query);
+                $sql_select_query = "SELECT email FROM employee WHERE email = '$email' ";
+                $r = mysqli_query($conn , $sql_select_query);
 
                 if( mysqli_num_rows($r) > 0 ){
                     $emailErr = "<p style='color:red'> * Email Already Register</p>";
                 } else{
 
-                    $sql = "INSERT INTO EmployeePersonalDetails (FirstName, MiddleName, LastName, DateOfBirth, Email, PhoneNumber, ParentPhoneNumber, FatherName, MotherName, BloodGroup, Age, Gender, Resume, ProfilePhoto)
-                     VALUES
-                      ('$fname', '$mname', '$lname', '$dob', '$email', '$phone', '$pphone', '$frname', '$mrname', '$bname', '$age', '$gender', '$resume', '$pphoto')";
-                      
-
-
-                    if (mysqli_query($con, $sql)) {
-                        echo "Employee record inserted successfully";
-                    } else {
-                        echo "Error inserting Employee record: " . mysqli_error($con);
+                    $sql = "INSERT INTO employee( name , email , password , dob, gender , phone ) VALUES( '$name' , '$email' , '$pass' , '$dob' , '$gender', '$phone' )  ";
+                    $result = mysqli_query($conn , $sql);
+                    if($result){
+                     $fame =$lname=$frname=$mrname=$bname= $email = $dob = $gender = $pass = $phone = "";
+                        echo "<script>
+                        $(document).ready( function(){
+                            $('#showModal').modal('show');
+                            $('#modalHead').hide();
+                            $('#linkBtn').attr('href', 'manage-employee.php');
+                            $('#linkBtn').text('View Employees');
+                            $('#addMsg').text('Employee Added Successfully!');
+                            $('#closeBtn').text('Add More?');
+                        })
+                     </script>
+                     ";
                     }
-
-                    // Bind parameters
-                    
-
-                    $sql1 = "INSERT INTO EmployeeEducationalDetails 
-                    (Email, EducationLevel, Degree, SchoolName, SchoolBoard, UniversityName, Mode, Stream, State, StartDate, EndDate, Marks)
-                    VALUES 
-                    ('$email', '$educationLevel', '$degree', '$sname', '$sbname', '$uname', '$mode', '$stream', '$state', '$sdate', '$edate', '$marks')";
-
-                    if (mysqli_query($con, $sql1)) {
-                        echo "Employee record inserted successfully";
-                    } else {
-                        echo "Error inserting Employee record: " . mysqli_error($con);
-                    }
-
-
-                    $sql2 = "INSERT INTO EmployeeWorkExperience (Email, CompanyName, Department, Designation, ExperienceYears, Package, TakehomeSalary) 
-                    VALUES ('$email', '$cname', '$depart', '$design' ,'$exp', '$pack', '$hsal')";
-
-                    if (mysqli_query($con, $sql2)) {
-                        echo "Employee record inserted successfully";
-                    } else {
-                        echo "Error inserting Employee record: " . mysqli_error($con);
-                    }
-
-
-
-                    $sql3 = "INSERT INTO EmployeeBankDetails (Email, AccountType, AccountHolderName, AccountNumber, BankName, BranchName, UpiNumber, IfscCode, Designation, Department, MonthlySalary, AnnualPackage) 
-                    VALUES ('$email', '$acctype', '$ahname', '$accnum', '$bankname', '$braname', '$upinum', '$ifsc', '$design1', '$depart1', '$msal', '$apack')";
-
-                    if (mysqli_query($con, $sql3)) {
-                        echo "Employee record inserted successfully";
-                    } else {
-                        echo "Error inserting Employee record: " . mysqli_error($con);
-                    }
-
-                    session_destroy();
-
                     
                 }
 
             }
-            
-
-           
-
-
-            
         }
 
 ?>
@@ -351,10 +202,10 @@
                                 <i class="fas fa-chart-bar"></i>Charts</a>
                         </li>
                         <li>
-                            <a href="./addemployee.php">
-                            <i class="fa-solid fa-user"></i>Employee Master</a>
+                            <a href="./addintern.php">
+                            <i class="fa-solid fa-user"></i>Intern Master</a>
                             <ul aria-expanded="false">
-                            <li><a href="./addemployee.php"> <i class="icon-plus menu-icon"></i><span class="nav-text">Add Employee</span></a></li>
+                            <li><a href="./addintern.php"> <i class="icon-plus menu-icon"></i><span class="nav-text">Add Intern</span></a></li>
                             <!--<li><a href="./manageemployee.php"> <i class="fa fa-tasks menu-icon"></i><span class="nav-text">Manage Employee</span></a></li>-->
                             <!-- <li><a href="./"> <i class="fa fa-bar-chart menu-icon"></i><span class="nav-text">Salary Table</span></a></li> -->
 
@@ -440,31 +291,31 @@
             <div class="card-body pt-4 justify-content-between">                       
                                     
                                 <form method="POST" action=" <?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" class="empform">
-                                <h4 class="text-center text-info pb-3 border-bottom">Work Experience</h4>
+                                <h4 class="text-center text-info pb-3 border-bottom">Internship Experience</h4>
                                 <br>
                                 <div id="workExp">
                                 <div id="workExp1">
                                     <div class="row justify-content-center">
                                         <div class="col-md-5">
                                         <div class="form-group">
-                                            <label for="cname">Company Name:</label>
-                                            <input type="text" class="form-control" id="cname" name="cname" placeholder="Enter your Company Name" value>
+                                            <label for="currentcompany">Company Name:</label>
+                                            <input type="text" class="form-control" id="currentcompany" placeholder="Enter your Company Name" value>
                                         </div>
                                         </div>
                                        
                                         <div class="col-md-5">
                                         <div class="form-group">
-                                            <label for="depart">Department:</label>
-                                            <input type="text" class="form-control" id="depart" name="depart" placeholder="Enter your Department" value>
+                                            <label for="department">Department:</label>
+                                            <input type="text" class="form-control" id="department" placeholder="Enter your Department" value>
                                         </div>
                                         </div>
                                     </div>
                                     <div class="row justify-content-center">
                                         
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="design">Designation:</label>
-                                            <select id="design" name="design" class="form-control">
+                                            <label for="designation">Designation:</label>
+                                            <select id="designation" class="form-control">
                                             <option>Select</option>
                                             <option>NA</option>
                                             <option>Branch Manager</option>
@@ -480,31 +331,32 @@
                                             </select>
                                         </div>
                                         </div>
-                                        <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="exp">Experience:</label>
-                                            <select id="exp" name="exp" class="form-control">
-                                            <option>Select</option>
-                                            <option>No Experience</option>
-                                            <option>0-2 Years</option>
-                                            <option>2-4 Years</option>
-                                            <option>4-6 Years</option>
-                                            <option>6-8 Years</option>
-                                            <option>8-10 Years</option>
-                                            <option>10+ Years</option>
-                                            </select>
-                                        </div>
-                                        </div>
                                         <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="pack">Package:</label>
-                                            <input type="text" class="form-control" name="pack" id="pack" placeholder="Enter your Salary Package" value>
+                                        <label>Start Date:</label>
+                                        <div class="input-group date" id="start-time-picker" data-target-input="nearest">
+                                            <input type="date" class="form-control datetimepicker-input" data-target="#start-time-picker"/>
+                                            <div class="input-group-append" data-target="#start-time-picker" data-toggle="datetimepicker">
+                                            
+                                            </div>
                                         </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                        <label>End date:</label>
+                                        <div class="input-group date" id="end-time-picker" data-target-input="nearest">
+                                            <input type="date" class="form-control datetimepicker-input" data-target="#end-time-picker"/>
+                                            <div class="input-group-append" data-target="#end-time-picker" data-toggle="datetimepicker">
+                                            
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
                                         <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="hsal">Take Home Salary:</label>
-                                            <input type="text" class="form-control" name="hsal" id="hsal" placeholder="Enter your Salary" value>
+                                            <label for="salary">Stipend:</label>
+                                            <input type="text" class="form-control" id="salary" placeholder="Enter your stipend" value>
                                         </div>
                                         </div>
                                     </div>
@@ -536,8 +388,8 @@
                                 <div class="row justify-content-center">
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="acctype">Account Type:</label>
-                                            <select name="acctype" class="form-control">
+                                            <label for="accountType">Account Type:</label>
+                                            <select name="account-type" class="form-control">
                                                 <option value="">Select Account Type</option>
                                                 <option value="savings">Savings Account</option>
                                                 <option value="Salary">Salary Account</option>
@@ -550,14 +402,14 @@
                                     
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="ahname">Account Holder Name:</label>
-                                            <input type="text" class="form-control" name="ahname" id="ahname" placeholder="Enter account holder name" value>
+                                            <label for="accountHolderName">Account Holder Name:</label>
+                                            <input type="text" class="form-control" id="accountHolderName" placeholder="Enter account holder name" value>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="accnum">Account Number:</label>
-                                            <input type="text" class="form-control" name="accnum" id="accnum" placeholder="Enter your account number" value>
+                                            <label for="accountNumber">Account Number:</label>
+                                            <input type="text" class="form-control" id="accountNumber" placeholder="Enter your account number" value>
                                         </div>
                                     </div>
                                 </div>
@@ -565,8 +417,8 @@
                                     
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="bankname">Bank Name:</label>
-                                            <select id="bankname" name="bankname" class="form-control">
+                                            <label for="bankName">Bank Name:</label>
+                                            <select id="bankName" class="form-control">
                                                 <option>Select</option>
                                                 <!--public sector banks-->
                                                 <option value="bank-of-baroda">Bank of Baroda</option>
@@ -717,21 +569,21 @@
                                     
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="braname">Branch Name:</label>
-                                            <input type="text" class="form-control" id="braname" name="braname" placeholder="Enter your Bank Branch" value>
+                                            <label for="branchName">Branch Name:</label>
+                                            <input type="text" class="form-control" id="branchName" placeholder="Enter your Bank Branch" value>
                                         </div>
                                     </div>
 
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="upinum">UPI Number:</label>
-                                            <input type="text" class="form-control" id="upinum" name="upinum" placeholder="Enter your UPI Number" value>
+                                            <label for="upiNumber">UPI Number:</label>
+                                            <input type="text" class="form-control" id="upiNumber" placeholder="Enter your UPI Number" value>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="ifsc">IFSC Code:</label>
-                                            <input type="text" class="form-control" id="ifsc" name="ifsc" placeholder="Enter your IFSC Code" value>
+                                            <label for="ifscCode">IFSC Code:</label>
+                                            <input type="text" class="form-control" id="ifscCode" placeholder="Enter your IFSC Code" value>
                                         </div>
                                     </div>
                                 </div>
@@ -740,28 +592,28 @@
                                 <div class="row justify-content-center">
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="design1">Designation:</label>
-                                            <input type="text" class="form-control" id="design1" name="design1" placeholder="Enter your Designation" value>
+                                            <label for="designation">Designation:</label>
+                                            <input type="text" class="form-control" id="designation" placeholder="Enter your Designation" value>
                                             
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="depart1">Department:</label>
-                                            <input type="text" class="form-control" id="depart1" name="depart1"  placeholder="Enter your Department" value>
+                                            <label for="department">Department:</label>
+                                            <input type="text" class="form-control" id="department" placeholder="Enter your Department" value>
                                         </div>
                                     </div>
                                     
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="msal">Monthly Salary:</label>
-                                            <input type="text" class="form-control" id="msal" name="msal" placeholder="Enter your monthly salary" value>
+                                            <label for="monthly-salary">Monthly Salary:</label>
+                                            <input type="text" class="form-control" id="monthly-salary" placeholder="Enter your monthly salary" value>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="apack">Annual Package:</label>
-                                            <input type="text" class="form-control" id="apack" name="apack" placeholder="Enter your annual package" value>
+                                            <label for="annual-package">Annual Package:</label>
+                                            <input type="text" class="form-control" id="annual-package" placeholder="Enter your annual package" value>
                                         </div>
                                     </div>
                                     
@@ -777,10 +629,10 @@
                                  <div class="form-row justify-content-center">
                                 
                                     <div class="form-group col-md-5">
-                                      <button class="btn btn-outline-primary"><a href="./addemp1.php">Previous</a></button><br>
+                                      <button class="btn btn-outline-primary"><a href="./addintern1.php">Previous</a></button><br>
                                     </div>
                                     <div class="form-group col-md-5">
-                                     <button type="submit" name="submit" class="btn btn-outline-primary float-right"><a href="">Submit</a></button>
+                                     <button class="btn btn-outline-primary float-right"><a href="">Submit</a></button>
                                     </div>
                                 </div>
 
@@ -838,27 +690,29 @@
             // Add education details
             $(document).on("click", ".add-Exp", function() {
                 var html = `<div id="workExp1">
+                                    <h4 class="text-center text-info pb-3 border-bottom"></h4>
+                                    <br>
                                     <div class="row justify-content-center">
                                         <div class="col-md-5">
                                         <div class="form-group">
-                                            <label for="cname">Company Name:</label>
-                                            <input type="text" class="form-control" id="cname" name="cname" placeholder="Enter your Company Name" value>
+                                            <label for="currentcompany">Company Name:</label>
+                                            <input type="text" class="form-control" id="currentcompany" placeholder="Enter your Company Name" value>
                                         </div>
                                         </div>
                                        
                                         <div class="col-md-5">
                                         <div class="form-group">
-                                            <label for="depart">Department:</label>
-                                            <input type="text" class="form-control" id="depart" name="depart" placeholder="Enter your Department" value>
+                                            <label for="department">Department:</label>
+                                            <input type="text" class="form-control" id="department" placeholder="Enter your Department" value>
                                         </div>
                                         </div>
                                     </div>
                                     <div class="row justify-content-center">
                                         
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="design">Designation:</label>
-                                            <select id="design" name="design" class="form-control">
+                                            <label for="designation">Designation:</label>
+                                            <select id="designation" class="form-control">
                                             <option>Select</option>
                                             <option>NA</option>
                                             <option>Branch Manager</option>
@@ -874,50 +728,48 @@
                                             </select>
                                         </div>
                                         </div>
-                                        <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="exp">Experience:</label>
-                                            <select id="exp" name="exp" class="form-control">
-                                            <option>Select</option>
-                                            <option>No Experience</option>
-                                            <option>0-2 Years</option>
-                                            <option>2-4 Years</option>
-                                            <option>4-6 Years</option>
-                                            <option>6-8 Years</option>
-                                            <option>8-10 Years</option>
-                                            <option>10+ Years</option>
-                                            </select>
-                                        </div>
-                                        </div>
                                         <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="pack">Package:</label>
-                                            <input type="text" class="form-control" name="pack" id="pack" placeholder="Enter your Salary Package" value>
-                                        </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label for="hsal">Take Home Salary:</label>
-                                            <input type="text" class="form-control" name="hsal" id="hsal" placeholder="Enter your Salary" value>
+                                        <label>Start Date:</label>
+                                        <div class="input-group date" id="start-time-picker" data-target-input="nearest">
+                                            <input type="date" class="form-control datetimepicker-input" data-target="#start-time-picker"/>
+                                            <div class="input-group-append" data-target="#start-time-picker" data-toggle="datetimepicker">
+                                            
+                                            </div>
                                         </div>
                                         </div>
                                     </div>
-                                    
-
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                        <label>End date:</label>
+                                        <div class="input-group date" id="end-time-picker" data-target-input="nearest">
+                                            <input type="date" class="form-control datetimepicker-input" data-target="#end-time-picker"/>
+                                            <div class="input-group-append" data-target="#end-time-picker" data-toggle="datetimepicker">
+                                            
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                        <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="salary">Stipend:</label>
+                                            <input type="text" class="form-control" id="salary" placeholder="Enter your stipend" value>
+                                        </div>
+                                        </div>
+                                    </div>
                                     <div class="form-row justify-content-center">
                                 
                                     <div class="form-group col-md-5">
-                                        
+                                       
                                     </div>
 
                                     <div class="form-group col-md-5">
-                                        <button  class="btn btn-outline-primary btn-sm float-right remove-Exp" type="button">Remove</button> 
-                                        <button  class="btn btn-outline-primary btn-sm float-right add-Exp" type="button">&nbsp; &nbsp;  Add &nbsp; &nbsp;  </button>
+                                    
+                                        <button  class="btn btn-outline-primary btn-sm float-right remove-Exp" type="button">Remove</button>
+                                        <button  class="btn btn-outline-primary btn-sm float-right add-Exp" type="button">&nbsp; &nbsp;  Add &nbsp; &nbsp;</button>
                                     </div>
 
                                     </div>
-
-
                                     </div>`
                             $("#workExp").append(html);
             });
